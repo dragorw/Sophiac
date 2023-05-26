@@ -1,34 +1,37 @@
 ﻿@page "/collections"
 
-<h1>Examination Collections</h1>
+<div id="collections">
+    <div id="collections-page-title">Examination Collections</div>
 
-@if (this._collections.Count == 0)
-{
-    <span>You've got no examination collections.</span>
-}
-else
-{
-    foreach (var collection in _collections)
+    @{ var createUrl = "collections/view"; }
+    <div id="collections-controller">
+        <div id="collections-controller-create" @onclick="() => manager.NavigateTo(createUrl)">
+            Create Examination Collection
+        </div>
+        <div id="collections-controller-import" @onclick="() => ImportCollectionAsync(CancellationToken.None)">
+            Import Examination Collection
+        </div>
+    </div>
+
+    @if (this._collections.Count == 0)
     {
-<div class="collection" @key="collection">
-    <span>@collection.Title</span>
-    @{ var runUrl = $"collections/run/{collection.FileName}";}
-    <button @onclick="() => manager.NavigateTo(runUrl)">Run</button>
-    @{ var updateUrl = $"collections/view/{collection.FileName}";}
-    <button @onclick="() => manager.NavigateTo(updateUrl)">Edit</button>
-    <button @onclick="() => ExportCollectionAsync(collection, CancellationToken.None)">Export</button>
-    <button @onclick="() => DeleteCollection(collection)">Delete</button>
-</div>
+        <div id="collections-page-disclaimer">You've got no examination collections.</div>
     }
-}
-
-@{ var createUrl = "collections/view"; }
-
-<div id="control-panel">
-    <button id="create-collection" href="collections/view" @onclick="() => manager.NavigateTo(createUrl)">
-        Create Examination Collection
-    </button>
-    <button id="import-collection" @onclick="() => ImportCollectionAsync(CancellationToken.None)">
-        Import Examination Collection
-    </button>
+    else
+    {
+        <div id="collections-list">
+            @foreach (var collection in _collections)
+            {
+            <div class="collection" @key="collection">
+                <div class="collection-title">@collection.Title</div>
+                @{ var runUrl = $"collections/run/{collection.FileName}";}
+                <div class="collection-run" @onclick="() => manager.NavigateTo(runUrl)">Run</div>
+                @{ var updateUrl = $"collections/view/{collection.FileName}";}
+                <div class="collection-edit" @onclick="() => manager.NavigateTo(updateUrl)">Edit</div>
+                <div class="collection-export" @onclick="() => ExportCollectionAsync(collection, CancellationToken.None)">Export</div>
+                <div class="collection-delete" @onclick="() => DeleteCollection(collection)">Delete</div>
+            </div>
+            }
+        </div>
+    }
 </div>

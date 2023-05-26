@@ -8,13 +8,13 @@ namespace Sophiac.Core.Models
 		public string Description { get; set; } = string.Empty;
 		public IList<ExaminationAnswer> Answers { get; set; } = new List<ExaminationAnswer>();
 
-		public void AddAnswer()
+		public void CreateAnswer()
 		{
 			var answer = new ExaminationAnswer();
 			Answers.Add(answer);
 		}
 
-		public void RemoveAnswer(ExaminationAnswer answer)
+		public void DeleteAnswer(ExaminationAnswer answer)
 		{
 			Answers.Remove(answer);
 		}

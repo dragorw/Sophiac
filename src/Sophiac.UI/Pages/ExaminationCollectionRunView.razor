@@ -1,45 +1,47 @@
 ﻿@page "/collections/run/{CollectionFileName?}"
 
-<h1>Run {_collection.Title}</h1>
+<div id="collection-run">
+    <div id="collection-run-title">{_collection.Title}</div>
+    @if (_currentQuestion is null)
+    {
 
-@if (_collection.Questions.Count < 1)
-{
-    <span>Unfortunately, this collection is empty.</span>
-}
-else
-{
-    <span>Ready to start?</span>
-    <button @onclick="StartRun">Start</button>
-}
-
-@*TODO Introduce components that will render question depending on it's type.'*@
-@if (_currentQuestion is not null)
-{
-    <div id="question">
-        <div id="question-title">
-            @_currentQuestion.Title
-        </div>
-        <div id="question-description">
-            @_currentQuestion.Description
-        </div>
-        <div id="question-answers">
-            @foreach (var answer in _currentQuestion.Answers)
+        <div id="collection-run-controller">
+            @if (_collection.Questions.Count < 1)
             {
-                <div class="answer" @key="answer">
-                    <div class="answer-title">
-                        @answer.Content
-                    </div>
-                    <div class="answer-select">
-                        <button @onclick="() => RecordAnswer(answer)">Select</button>
-                    </div>
-                    @if (answer.IsOptional)
-                    {
-                        <div class="answer-skip">
-                            <button @onclick="() => RecordAnswer(null)">Skip</button>
-                        </div>
-                    }
-                </div>
+                <div id="collection-run-controller-disclaimer">Unfortunately, this collection contains no questions.</div>
+            }
+            else
+            {
+                <div id="collection-run-controller-start" @onclick="StartRun">Start Test</div>
             }
         </div>
-    </div>
-}
+    }
+    else
+    {
+        <div id="collection-run-question">
+            <div id="collection-run-question-title">
+                @_currentQuestion.Title
+            </div>
+            <div id="collection-run-question-description">
+                @_currentQuestion.Description
+            </div>
+            <div id="collection-run-question-answers">
+                @*TODO Introduce components that will render question depending on it's type.'*@
+                @foreach (var answer in _currentQuestion.Answers)
+                {
+                    <div class="answer" @key="answer">
+                        <div class="answer-title">
+                            @answer.Content
+                        </div>
+                        <div class="answer-select">
+                            <button @onclick="() => RecordAnswer(answer)">Select</button>
+                        </div>
+                    </div>
+                }
+                <div class="answer-skip">
+                    <button @onclick="() => RecordAnswer(null)">Skip</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>

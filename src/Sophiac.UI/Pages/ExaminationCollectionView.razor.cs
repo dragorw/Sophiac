@@ -26,13 +26,13 @@ public partial class ExaminationCollectionView : ComponentBase
         _collection = repository.ReadCollection(CollectionFileName);
     }
 
-    public void AddQuestion()
+    public void CreateQuestion()
     {
         var question = new ExaminationQuestion();
         _collection.Questions.Add(question);
     }
 
-    public void RemoveQuestion(ExaminationQuestion question)
+    public void DeleteQuestion(ExaminationQuestion question)
     {
         _collection.Questions.Remove(question);
     }
