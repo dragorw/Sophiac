@@ -1,0 +1,24 @@
+﻿@page "/runs/view/{CollectionFileName?}"
+
+<h1>Run {_run.Title}</h1>
+
+<div class="answers">
+    @foreach (var answer in _run.Answers)
+    {
+        <div class="asnwer" @key="answer">
+            <div class="question-title">@answer.Question.Title</div>
+            <div class="question-description">@answer.Question.Description</div>
+            @if (answer.HasBeenSkipped)
+            {
+                <div class="selected-answer">The question has been skipped.</div>
+            }
+            else
+            {
+                <div class="selected-answer">Answer: @answer.SelectedAnswer.Content</div>
+                <div class="answer-is-correct">Is correct: @answer.SelectedAnswer.IsCorrect</div>
+                <div class="answer-is-optional">Is optional: @answer.SelectedAnswer.IsOptional</div>
+            }
+            <div class="answer-span">Time spent on a question: @answer.AnswerSpan.TotalSeconds seconds</div>
+        </div>
+    }
+</div>

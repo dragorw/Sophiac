@@ -1,0 +1,56 @@
+﻿@page "/collections/view/{CollectionFileName?}"
+
+@if (_collection is null)
+{
+    <h1>New Examination Collection</h1>
+}
+else
+{
+    <h1>@_collection.Title</h1>
+
+}
+
+<EditForm Model="@_collection" OnValidSubmit="@SubmitAsync">
+    <DataAnnotationsValidator />
+        <div>
+            <label>Title of colleciton</label>
+            <InputText id="collection-title" @bind-Value="@_collection.Title"></InputText>
+            <ValidationMessage For="@(() => _collection.Title)"></ValidationMessage>
+        </div>
+        <button type="button" @onclick="AddQuestion">Add a question</button>
+
+        @foreach(var question in _collection.Questions)
+        {
+            <div @key="question">
+                <label>Title of question</label>
+                <InputText class="question-title" @bind-Value="@question.Title"></InputText>
+                <ValidationMessage For="@(() => question.Title)"></ValidationMessage>
+
+                <label>Description of question</label>
+                <InputText class="question-description" @bind-Value="@question.Description"></InputText>
+                <ValidationMessage For="@(() => question.Description)"></ValidationMessage>
+
+                <button type="button" @onclick="() => question.AddAnswer()">Add Answer</button>
+                @foreach (var answer in question.Answers)
+                {
+                    <div @key="answer">
+                        <label>Answer</label>
+                        <InputText class="answer-content" @bind-Value="answer.Content"></InputText>
+                        <ValidationMessage For="@(() => answer.Content)"></ValidationMessage>
+
+                        <label>Is correct answer?</label>
+                        <InputCheckbox class="answer-isCorrect" @bind-Value="answer.IsCorrect"></InputCheckbox>
+                        <ValidationMessage For="(() => answer.IsCorrect)"></ValidationMessage>
+
+                        <label>Can be skipped?</label>
+                        <InputCheckbox class="answer-isOptional" @bind-Value="answer.IsOptional"></InputCheckbox>
+                        <ValidationMessage For="(() => answer.IsOptional)"></ValidationMessage>
+                    </div>
+                    <button type="button" @onclick="() => question.RemoveAnswer(answer)">Remove Answer</button>
+                }
+
+                <button type="button" @onclick="() => RemoveQuestion(question)">Remove Question</button>
+            </div>
+        }
+        <button type="submit">Submit</button>
+</EditForm>

@@ -1,4 +1,10 @@
-﻿namespace Sophiac.UI;
+﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Markup;
+using Microsoft.Extensions.Logging;
+using Sophiac.Core;
+
+namespace Sophiac.UI;
 
 public static class MauiProgram
 {
@@ -7,11 +13,25 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
-			.ConfigureFonts(fonts =>
+			.UseMauiCommunityToolkitCore()
+            .UseMauiCommunityToolkit()
+            .UseMauiCommunityToolkitMarkup()
+            .UseMauiCommunityToolkitMediaElement()
+            .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
+
+		builder.Services.AddMauiBlazorWebView();
+#if DEBUG
+		builder.Services.AddBlazorWebViewDeveloperTools();
+		builder.Logging.AddDebug();
+#endif
+
+        var path = Path.Combine(FileSystem.Current.AppDataDirectory, "com.github.aemilivs.sophiac");
+        builder.Services.AddSingleton<IExaminationCollectionsRepository>(it => new ExaminationCollectionsRepository(path));
+		// TODO Rename to plural.
+        builder.Services.AddSingleton<IExaminationRunRepository>(it => new ExaminationRunRepository(path));
 
 		return builder.Build();
 	}

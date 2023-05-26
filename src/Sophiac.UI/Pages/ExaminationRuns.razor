@@ -1,0 +1,23 @@
+﻿@page "/runs"
+
+<h1>Examination runs</h1>
+
+<button @onclick="() => ImportRunAsync(CancellationToken.None)"></button>
+
+@if (this._runs.Count == 0)
+{
+    <span>You've got no examination runs.</span>
+}
+else
+{
+    foreach (var run in _runs)
+    {
+        <div class="run" @key="run">
+            <span>@run.Title</span>
+            @{ var updateUrl = $"runs/view/{run.FileName}";}
+            <button @onclick="() => manager.NavigateTo(updateUrl)">View</button>
+            <button @onclick="() => ExportRunAsync(run, CancellationToken.None)">Export</button>
+            <button @onclick="() => DeleteRun(run)">Delete</button>
+        </div>
+    }
+}
