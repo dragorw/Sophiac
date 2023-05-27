@@ -9,7 +9,7 @@ using CommunityToolkit.Maui.Alerts;
 using System.Diagnostics;
 using Android.OS;
 
-namespace Sophiac.UI.Pages;
+namespace Sophiac.UI.Runs;
 
 public partial class ExaminationRuns : ComponentBase
 {

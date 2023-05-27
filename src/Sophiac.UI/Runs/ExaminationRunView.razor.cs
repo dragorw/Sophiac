@@ -8,7 +8,7 @@ using CommunityToolkit.Maui.Storage;
 using CommunityToolkit.Maui.Alerts;
 using System.Diagnostics;
 
-namespace Sophiac.UI.Pages;
+namespace Sophiac.UI.Runs;
 
 public partial class ExaminationRunView : ComponentBase
 {

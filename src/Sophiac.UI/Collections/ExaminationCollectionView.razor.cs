@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Sophiac.Core;
 using Sophiac.Core.Models;
 
-namespace Sophiac.UI.Pages;
+namespace Sophiac.UI.Collections;
 
 public partial class ExaminationCollectionView : ComponentBase
 {

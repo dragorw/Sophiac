@@ -8,7 +8,7 @@ using CommunityToolkit.Maui.Storage;
 using CommunityToolkit.Maui.Alerts;
 using System.Diagnostics;
 
-namespace Sophiac.UI.Pages;
+namespace Sophiac.UI.Collections;
 
 public partial class ExaminationCollectionRunView : ComponentBase
 {
@@ -38,7 +38,7 @@ public partial class ExaminationCollectionRunView : ComponentBase
             return;
 
         _collection = collectionsRepository.ReadCollection(CollectionFileName);
-        _run.Title = _collection.Title + DateTime.UtcNow;
+        _run.Title = _collection.Title;
     }
 
     public void StartRun()
@@ -47,7 +47,7 @@ public partial class ExaminationCollectionRunView : ComponentBase
         _watch.Start();
     }
 
-    public void RecordAnswer(ExaminationAnswer selectedAnswer)
+    public void RecordAnswer(IList<ExaminationAnswer> answers)
     {
         _watch.Stop();
         var recordedAnswer =
@@ -55,7 +55,7 @@ public partial class ExaminationCollectionRunView : ComponentBase
             {
                 AnswerSpan = _watch.Elapsed,
                 Question = _currentQuestion,
-                SelectedAnswer = selectedAnswer,
+                Answers = answers,
             };
         _run.Answers.Add(recordedAnswer);
         _watch.Restart();

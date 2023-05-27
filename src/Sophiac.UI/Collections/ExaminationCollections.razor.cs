@@ -7,7 +7,7 @@ using System.Text;
 using CommunityToolkit.Maui.Storage;
 using CommunityToolkit.Maui.Alerts;
 
-namespace Sophiac.UI.Pages;
+namespace Sophiac.UI.Collections;
 
 public partial class ExaminationCollections : ComponentBase
 {

@@ -1,7 +1,7 @@
 ﻿@page "/collections/run/{CollectionFileName?}"
 
 <div id="collection-run">
-    <div id="collection-run-title">{_collection.Title}</div>
+    <div id="collection-run-title">@_collection.Title</div>
     @if (_currentQuestion is null)
     {
 
@@ -26,7 +26,6 @@
                 @_currentQuestion.Description
             </div>
             <div id="collection-run-question-answers">
-                @*TODO Introduce components that will render question depending on it's type.'*@
                 @foreach (var answer in _currentQuestion.Answers)
                 {
                     <div class="answer" @key="answer">

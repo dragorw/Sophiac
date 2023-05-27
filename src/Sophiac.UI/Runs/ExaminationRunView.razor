@@ -2,6 +2,7 @@
 
 <div id="run">
     <div id="run-title">@_run.Title</div>
+    <div id="run-time">@_run.Time.ToLocalTime()</div>
     @*TODO Replace answer with question in that hierarchy.*@
     <div id="run-answers">
         @foreach (var answer in _run.Answers)
@@ -15,8 +16,18 @@
                 }
                 else
                 {
-                    <div class="selected-answer">Answer: @answer.SelectedAnswer.Content</div>
-                    <div class="answer-points">Points: @answer.SelectedAnswer.Points</div>
+                    @foreach (var item in answer.Answers)
+                    {
+                        @if (answer is ExaminationMappingAnswer mappingAnswer)
+                        {
+
+                        }
+                        else
+                        {
+                            <div class="selected-answer">Answer: @answer.Answers.Content</div>
+                            <div class="answer-points">Points: @answer.Answers.Points</div>
+                        }
+                    }
                 }
                 <div class="answer-span">Time spent on a question: @answer.AnswerSpan.TotalSeconds seconds</div>
             </div>

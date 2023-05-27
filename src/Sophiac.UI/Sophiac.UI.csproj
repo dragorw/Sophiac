@@ -67,4 +67,16 @@
     <ItemGroup>
       <ProjectReference Include="..\Sophiac.Core\Sophiac.Core.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <None Remove="Answers\" />
+      <None Remove="Questions\" />
+      <None Remove="Collections\" />
+      <None Remove="Runs\" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Answers\" />
+      <Folder Include="Questions\" />
+      <Folder Include="Collections\" />
+      <Folder Include="Runs\" />
+    </ItemGroup>
 </Project>
