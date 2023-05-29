@@ -192,23 +192,15 @@ public partial class TestSetsPage : ComponentBase
                 {
                     using (var reader = new PdfReader(file.FullPath))
                     {
-                        var limit = Math.Min(5, reader.NumberOfPages);
-
-                        if (reader.NumberOfPages > 5)
-                        {
-                            await Toast.Make("Only first 5 pages of the PDF will be processed.").Show();
-                        }
-
-                        var builder = new StringBuilder();
+                        var pages = new List<string>();
                         var strategy = new SimpleTextExtractionStrategy();
-                        for (int index = 0; index < limit; index++)
+                        for (int index = 1; index <= reader.NumberOfPages; index++)
                         {
-                            var pageText = PdfTextExtractor.GetTextFromPage(reader, index + 1, strategy);
-                            builder.AppendLine(pageText);
+                            var pageText = PdfTextExtractor.GetTextFromPage(reader, index, strategy);
+                            pages.Add(pageText);
                         }
-                        var documentText = builder.ToString();
                         await Toast.Make("Processing PDF might take several minutes.").Show();
-                        var raw = await Provider.PredictPayloadAsync(documentText);
+                        var raw = await Provider.PredictPayloadAsync(pages);
                         var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
                         var set = JsonConvert.DeserializeObject<TestSet>(raw, settings);
                         if (set is null)
