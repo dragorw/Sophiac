@@ -5,7 +5,7 @@
         <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
         <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
         <!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
-        <OutputType>Exe</OutputType>
+        <OutputType>Library</OutputType>
         <RootNamespace>Sophiac.UI</RootNamespace>
         <UseMaui>true</UseMaui>
         <SingleProject>true</SingleProject>
@@ -34,6 +34,10 @@
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-ios|AnyCPU'">
       <CreatePackage>false</CreatePackage>
       <CodesignKey>iPhone Developer</CodesignKey>
+      <DeviceSpecificBuild>true</DeviceSpecificBuild>
+      <MtouchVerbosity>2</MtouchVerbosity>
+      <MtouchInterpreter>all</MtouchInterpreter>
+      <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-ios|AnyCPU'">
       <CreatePackage>false</CreatePackage>
@@ -46,6 +50,9 @@
       <CodesignKey>Mac Developer</CodesignKey>
       <PackageSigningKey>3rd Party Mac Developer Installer</PackageSigningKey>
       <CodesignEntitlements></CodesignEntitlements>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-android|AnyCPU'">
+      <AndroidManifest>AndroidManifest.xml</AndroidManifest>
     </PropertyGroup>
     <ItemGroup>
         <!-- App Icon -->
@@ -107,12 +114,5 @@
       <Content Include="TestSets\TestSetPage.razor.css" />
       <Content Include="TestSets\TestSetsPage.razor.css" />
       <Content Include="Questions\View\MultipleChoicesQuestionViewComponent.razor.css" />
-    </ItemGroup>
-    <ItemGroup>
-      <BundleResource Include="appsettings.json">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </BundleResource>
     </ItemGroup>
 </Project>
