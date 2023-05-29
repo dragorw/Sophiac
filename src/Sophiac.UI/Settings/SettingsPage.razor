@@ -1,0 +1,15 @@
+﻿@page "/settings"
+
+<div class="settings">
+    <div class="settings-title">Settings</div>
+    <div class="settings-openai">
+        <div class="settings-openai-key">
+            <div class="settings-openai-key-description">
+                OpenAI key that is used to communicate with API.
+            </div>
+            <div class="settings-openai-key-input">
+                <InputText @bind-Value="_key" @oninput="@SaveKeyAsync"></InputText>
+            </div>
+        </div>
+    </div>
+</div>

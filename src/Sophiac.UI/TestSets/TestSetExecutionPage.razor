@@ -1,0 +1,41 @@
+﻿@page "/testsets/execute/{TestSetFileName?}"
+@using Sophiac.Core.Questions
+@using Sophiac.UI.Questions.Execution
+
+<div id="testset-run">
+    <div id="testset-run-title">@_set.Title</div>
+    @if (_currentQuestion is null)
+    {
+        <div id="testset-run-controller">
+            @if (_set.Questions.Count < 1)
+            {
+                <div id="testset-run-controller-disclaimer">Unfortunately, this test set contains no questions.</div>
+            }
+            else
+            {
+                <div id="testset-run-controller-start" @onclick="StartRun">Start Test</div>
+            }
+        </div>
+    }
+    else
+    {
+        <div id="testset-run-question">
+            @switch (_currentQuestion)
+            {
+                case SingleChoiceQuestion singleChoiceQuestion:
+                    <SingleChoiceQuestionExecutionComponent Question="singleChoiceQuestion" Run="_run" PostAnswerAction="PostAnswerAction" Watch="_watch"></SingleChoiceQuestionExecutionComponent>
+                    break;
+                case MultipleChoicesQuestion multipleChoicesQuestion:
+                    <MultipleChoicesQuestionExecutionComponent Question="multipleChoicesQuestion" Run="_run" PostAnswerAction="PostAnswerAction" Watch="_watch"></MultipleChoicesQuestionExecutionComponent>
+                    break;
+                case MappingQuestion mappingQuestion:
+                    <MappingQuestionExecutionComponent Question="mappingQuestion" Run="_run" PostAnswerAction="PostAnswerAction" Watch="_watch"></MappingQuestionExecutionComponent>
+                    break;
+                default:
+                    <div id="testset-run-question">Invalid question type.</div>
+
+                    break;
+            }
+        </div>
+    }
+</div>

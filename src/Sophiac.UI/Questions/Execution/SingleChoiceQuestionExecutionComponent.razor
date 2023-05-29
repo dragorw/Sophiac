@@ -1,0 +1,27 @@
+﻿@using Sophiac.Core.Answers
+
+<div id="question">
+    <div id="question-title">
+        @Question.Title
+    </div>
+    <div id="question-description">
+        @Question.Description
+    </div>
+    <div id="question-answers">
+        @foreach (var answer in Question.Answers)
+        {
+            @if (answer is SingleChoiceAnswer singleChoiceAnswer)
+            {
+                <div class="answer" @key="answer" @onclick="() => RecordAnswer(singleChoiceAnswer)">
+                    @singleChoiceAnswer.Content
+                </div>
+            }
+            else
+            {
+                <div class="answer-error">
+                    Test set file you are using is corrupted.
+                </div>
+            }
+        }
+    </div>
+</div>

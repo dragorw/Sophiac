@@ -13,15 +13,15 @@
         <EnableDefaultCssItems>false</EnableDefaultCssItems>
 
         <!-- Display name -->
-        <ApplicationTitle>Sophiac.UI</ApplicationTitle>
+        <ApplicationTitle>Sophiac</ApplicationTitle>
 
         <!-- App Identifier -->
-        <ApplicationId>com.companyname.sophiac.ui</ApplicationId>
+        <ApplicationId>com.github.aemilivs.sophiac</ApplicationId>
         <ApplicationIdGuid>A139C7CC-DEEC-4505-9F1F-DB6A5EBAA0F8</ApplicationIdGuid>
 
         <!-- Versions -->
-        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-        <ApplicationVersion>1</ApplicationVersion>
+        <ApplicationDisplayVersion>1.3</ApplicationDisplayVersion>
+        <ApplicationVersion>3</ApplicationVersion>
 
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
@@ -33,9 +33,19 @@
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-ios|AnyCPU'">
       <CreatePackage>false</CreatePackage>
+      <CodesignKey>iPhone Developer</CodesignKey>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-ios|AnyCPU'">
       <CreatePackage>false</CreatePackage>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+      <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-maccatalyst|AnyCPU'">
+      <CreatePackage>false</CreatePackage>
+      <CodesignKey>Mac Developer</CodesignKey>
+      <PackageSigningKey>3rd Party Mac Developer Installer</PackageSigningKey>
+      <CodesignEntitlements></CodesignEntitlements>
     </PropertyGroup>
     <ItemGroup>
         <!-- App Icon -->
@@ -62,6 +72,8 @@
         <PackageReference Include="CommunityToolkit.Maui.Core" Version="5.2.0" />
         <PackageReference Include="CommunityToolkit.Maui.Markup" Version="3.2.0" />
         <PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="1.0.2" />
+        <PackageReference Include="iTextSharp" Version="5.5.13.3" />
+        <PackageReference Include="OpenAI" Version="1.7.2" />
     </ItemGroup>
 
     <ItemGroup>
@@ -70,13 +82,37 @@
     <ItemGroup>
       <None Remove="Answers\" />
       <None Remove="Questions\" />
-      <None Remove="Collections\" />
       <None Remove="Runs\" />
+      <None Remove="Questions\Execution\" />
+      <None Remove="Questions\View\" />
+      <None Remove="TestSets\TestSetsPage.css" />
+      <None Remove="TestSets\TestSetPage.razor.css" />
+      <None Remove="TestSets\TestSetsPage.razor.css" />
+      <None Remove="Questions\View\MultipleChoicesQuestionViewComponent.razor.css" />
+      <None Remove="Settings\" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Answers\" />
       <Folder Include="Questions\" />
-      <Folder Include="Collections\" />
       <Folder Include="Runs\" />
+      <Folder Include="Questions\Execution\" />
+      <Folder Include="Questions\View\" />
+      <Folder Include="Settings\" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Remove="appsettings.json" />
+      <Content Remove="appsettings.json" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="TestSets\TestSetPage.razor.css" />
+      <Content Include="TestSets\TestSetsPage.razor.css" />
+      <Content Include="Questions\View\MultipleChoicesQuestionViewComponent.razor.css" />
+    </ItemGroup>
+    <ItemGroup>
+      <BundleResource Include="appsettings.json">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </BundleResource>
     </ItemGroup>
 </Project>

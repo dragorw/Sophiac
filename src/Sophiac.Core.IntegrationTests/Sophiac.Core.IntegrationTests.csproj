@@ -16,7 +16,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="3.2.0">
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -24,9 +24,13 @@
 
   <ItemGroup>
     <None Remove="Models\" />
+    <None Remove="TestSets\" />
+    <None Remove="TestRuns\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="TestSets\" />
+    <Folder Include="TestRuns\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sophiac.Core\Sophiac.Core.csproj" />

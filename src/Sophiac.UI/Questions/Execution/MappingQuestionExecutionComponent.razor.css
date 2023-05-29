@@ -1,0 +1,118 @@
+﻿#question {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background-color: var(--background-color);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+#question-title {
+    color: var(--main-color);
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#question-description {
+    color: var(--secondary-color);
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+#question-answers {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.answer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    padding: 15px;
+    background-color: var(--secondary-color);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.answer-left,
+.answer-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    gap: 15px;
+}
+
+.answer-left-option,
+.answer-right-option {
+    color: var(--main-color);
+    font-size: 1.2rem;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.answer-left-controller,
+.answer-right-controller {
+    display: flex;
+    justify-content: space-between;
+}
+
+.answer-left-controller-up,
+.answer-left-controller-down,
+.answer-right-controller-up,
+.answer-right-controller-down {
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 4px;
+    color: var(--background-color);
+    background-color: var(--secondary-color);
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.answer-left-controller-up:hover,
+.answer-left-controller-down:hover,
+.answer-right-controller-up:hover,
+.answer-right-controller-down:hover,
+.answer-left-controller-up:focus,
+.answer-left-controller-down:focus,
+.answer-right-controller-up:focus,
+.answer-right-controller-down:focus {
+    background-color: var(--action-color);
+    outline: none;
+}
+
+.answer-delimiter {
+    align-self: center;
+    justify-self: center;
+}
+
+.question-answers-submit {
+    cursor: pointer;
+    padding: 15px 30px;
+    border-radius: 4px;
+    color: var(--background-color);
+    background-color: var(--controller-color);
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-top: 20px;
+}
+
+.question-answers-submit:hover,
+.question-answers-submit:focus {
+    background-color: var(--action-color);
+    outline: none;
+}
+
+@media (max-width: 600px) {
+    #question {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .answer {
+        grid-template-columns: 1fr;
+    }
+}

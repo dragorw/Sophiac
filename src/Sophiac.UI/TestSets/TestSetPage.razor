@@ -1,0 +1,69 @@
+﻿@page "/testsets/view/{TestSetFileName?}"
+
+@using Sophiac.Core.Questions
+@using Sophiac.Core.Answers
+@using Sophiac.UI.Questions.View
+
+<div id="testset">
+    <div id="testset-title">@_set.Title</div>
+    <div id="testset-form">
+        <EditForm Model="@_set" OnValidSubmit="@SubmitAsync">
+            <DataAnnotationsValidator />
+            <div id="testset-form-title">
+                <label>Title of colleciton</label>
+                <InputText id="testset-title" @bind-Value="@_set.Title"></InputText>
+                <ValidationMessage For="@(() => _set.Title)"></ValidationMessage>
+            </div>
+            <div id="testset-form-questions">
+                <div id="testset-form-questions-controller">
+                    <div id="testset-form-questions-controller-create" @onclick="CreateQuestion">
+                        Add new question
+                    </div>
+                    <div id="testset-form-questions-controller-submit">
+                        <button type="submit">Submit</button>
+                    </div>
+                </div>
+                @foreach (var question in _set.Questions)
+                {
+                    <div class="question">
+                        <div class="question-title">
+                            <label>Title of question</label>
+                            <InputText class="question-title-input" @bind-Value="@question.Title"></InputText>
+                        </div>
+                        @*TODO Add a component for edition question-description with the support of markdown.*@
+                        <div class="question-description">
+                            <label>Description of question</label>
+                            <InputText class="question-description-input" @bind-Value="@question.Description"></InputText>
+                        </div>
+                        <div class="question-type">
+                            <div>
+                                <label>Question Type</label>
+                                @{ var container = new AnswerOption { Content = question.GetType().Name }; }
+                                <InputSelect TValue="string" Value="@container.Content" ValueExpression="@(() => container.Content)" @oninput="it => OnQuestionTypeChange(it, question)">
+                                    <option value="@typeof(SingleChoiceQuestion).Name">Single Choice Question</option>
+                                    <option value="@typeof(MultipleChoicesQuestion).Name">Multiple Choices Question</option>
+                                    <option value="@typeof(MappingQuestion).Name">Mapping Question</option>
+                                </InputSelect>
+                            </div>
+                        </div>
+                        @switch (question)
+                        {
+                            case SingleChoiceQuestion singleChoiceQuestion:
+                                <SingleChoiceQuestionViewComponent Question="singleChoiceQuestion" DeleteAction="() => DeleteQuestion(question)"></SingleChoiceQuestionViewComponent>
+                                break;
+                            case MultipleChoicesQuestion multipleChoicesQuestion:
+                                <MultipleChoicesQuestionViewComponent Question="multipleChoicesQuestion" DeleteAction="() => DeleteQuestion(question)"></MultipleChoicesQuestionViewComponent>
+                                break;
+                            case MappingQuestion mappingQuestion:
+                                <MappingQuestionViewComponent Question="mappingQuestion" DeleteAction="() => DeleteQuestion(question)"></MappingQuestionViewComponent>
+                                break;
+                            default:
+                                <div></div>
+                                break;
+                        }
+                    </div>
+                }
+            </div>
+        </EditForm>
+    </div>
+</div>

@@ -7,9 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Models\" />
+    <None Remove="Answers\" />
+    <None Remove="Questions\" />
+    <None Remove="TestSets\QuestionsDelivery\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
+    <Folder Include="Answers\" />
+    <Folder Include="Questions\" />
+    <Folder Include="TestSets\QuestionsDelivery\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 </Project>

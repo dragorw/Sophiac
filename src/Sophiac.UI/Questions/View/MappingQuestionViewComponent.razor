@@ -1,0 +1,41 @@
+﻿@using Sophiac.Core.Answers
+
+<div class="question-controller">
+    <div class="question-controller-create" @onclick="() => Question.Answers.Add(new MappingAnswer())">Add Answer</div>
+    <div class="question-controller-delete" @onclick="() => DeleteAction()">Delete Question</div>
+</div>
+@foreach (var answer in Question.Answers.Select(it => it as MappingAnswer))
+{
+    <div class="question-answers">
+        <div class="answer" @key="answer">
+            <div class="answer-options">
+                <div class="answer-options-controller">
+                    <div class="answer-options-controller-create" @onclick="() => AddAnswerOption(answer)">
+                        Create Answer Option
+                    </div>
+                </div>
+                @foreach (var option in answer.Content)
+                {
+                    <div class="answer-option">
+                        <div class="answer-option-source">
+                            <label>Answer Option Source</label>
+                            <InputText class="answer-content-input" @bind-Value="option.Source"></InputText>
+                            <ValidationMessage For="@(() => option.Source)"></ValidationMessage>
+                        </div>
+                        <div class="answer-option-destination">
+                            <label>Answer Option Destination</label>
+                            <InputText class="answer-content-input" @bind-Value="option.Destination"></InputText>
+                            <ValidationMessage For="@(() => option.Destination)"></ValidationMessage>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="answer-points">
+                <label>Amount of points for selecting this answer</label>
+                <InputNumber class="answer-points-input" @bind-Value="answer.Points"></InputNumber>
+                <ValidationMessage For="(() => answer.Points)"></ValidationMessage>
+            </div>
+        </div>
+        <div class="answer-delete" @onclick="() => Question.Answers.Remove(answer)">Delete Answer</div>
+    </div>
+}

@@ -1,5 +1,5 @@
 ﻿using System;
-using Sophiac.Core.Models;
+using Sophiac.Core.TestSets;
 
 namespace Sophiac.Core.UnitTests.Models
 {

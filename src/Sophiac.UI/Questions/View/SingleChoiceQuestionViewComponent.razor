@@ -1,0 +1,25 @@
+﻿@using Sophiac.Core.Answers
+
+
+<div class="question-controller">
+    <div class="question-controller-create" @onclick="() => Question.Answers.Add(new SingleChoiceAnswer())">Add Answer</div>
+    <div class="question-controller-delete" @onclick="() => DeleteAction()">Delete Question</div>
+</div>
+@foreach (var answer in Question.Answers.Select(it => it as SingleChoiceAnswer))
+{
+    <div class="question-answers">
+        <div class="answer" @key="answer">
+            <div class="answer-content">
+                <label>Answer</label>
+                <InputText class="answer-content-input" @bind-Value="answer.Content"></InputText>
+                <ValidationMessage For="@(() => answer.Content)"></ValidationMessage>
+            </div>
+            <div class="answer-points">
+                <label>Amount of points for selecting this question</label>
+                <InputNumber class="answer-points-input" @bind-Value="answer.Points"></InputNumber>
+                <ValidationMessage For="(() => answer.Points)"></ValidationMessage>
+            </div>
+        </div>
+        <div class="answer-delete" @onclick="() => Question.Answers.Remove(answer)">Delete Answer</div>
+    </div>
+}

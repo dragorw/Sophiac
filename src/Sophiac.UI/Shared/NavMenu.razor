@@ -1,6 +1,6 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">Sophiac.UI</a>
+        <a class="navbar-brand" href="">Sophiac</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -10,13 +10,18 @@
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="collections" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Examination Collections
+            <NavLink class="nav-link" href="testsets" Match="NavLinkMatch.All">
+                <span aria-hidden="true"></span> Test Sets
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="runs" Match="NavLinkMatch.All">
-                <span class="oi oi-brush" aria-hidden="true"></span> Examination Runs
+            <NavLink class="nav-link" href="testruns" Match="NavLinkMatch.All">
+                <span aria-hidden="true"></span> Test Runs
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="settings" Match="NavLinkMatch.All">
+                <span aria-hidden="true"></span> Settings
             </NavLink>
         </div>
     </nav>

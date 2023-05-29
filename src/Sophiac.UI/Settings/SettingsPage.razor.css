@@ -1,0 +1,57 @@
+﻿.settings {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--background-color);
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.settings-title {
+    color: var(--main-color);
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.settings-openai {
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.settings-openai-key-description {
+    color: var(--main-color);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.settings-openai-key-input input {
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 0.5rem;
+    width: 10rem;
+    font-size: 1rem;
+    color: var(--main-color);
+}
+
+.settings-openai-key-input input:focus {
+    outline: none;
+    box-shadow: 0 0 5px var(--main-color);
+}
+
+@media (max-width: 600px) {
+    .settings {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .settings-title {
+        font-size: 1.8rem;
+    }
+
+    .settings-openai-key-description {
+        font-size: 1rem;
+    }
+}

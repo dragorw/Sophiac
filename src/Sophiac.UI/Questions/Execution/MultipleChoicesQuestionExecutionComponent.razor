@@ -1,0 +1,26 @@
+﻿@using Sophiac.Core.Answers
+
+<div id="question">
+    <div id="question-title">
+        @Question.Title
+    </div>
+    <div id="question-description">
+        @Question.Description
+    </div>
+    <div id="question-answers">
+        @foreach (var option in PotentialOptions)
+        {
+            <div class="option" @key="option" @onclick="() => ToggleOption(option)">
+                <div class="answer-option @GetOptionClassIndicator(option)"> 
+                    <div class="answer-option-content">@option</div>
+                </div>
+                <div class="answer-select @(SelectedOptions.Contains(option) ? string.Empty : "hidden")">
+                    ✔️
+                </div>
+            </div>
+        }
+        <div class="question-answers-submit" @onclick="() => RecordAnswer()">
+            Submit
+        </div>
+    </div>
+</div>

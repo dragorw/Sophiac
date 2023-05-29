@@ -1,0 +1,27 @@
+﻿@page "/testruns"
+
+<div id="testruns">
+    <div id="testruns-page-title">Test runs</div>
+    <div id="testruns-controller">
+        <div id="testruns-import" @onclick="() => ImportTestRunAsync(CancellationToken.None)">Import</div>
+    </div>
+    @if (this._runs.Count == 0)
+    {
+        <div id="testruns-page-disclaimer">You've got no test runs.</div>
+    }
+    else
+    {
+        <div id="testruns-list">
+            @foreach (var run in _runs)
+            {
+                <div class="run" @key="run">
+                    <div class="run-title">@run.Title</div>
+                    @{ var viewUrl = $"/testruns/view/{run.FileName}";}
+                    <div class="run-view" @onclick="() => manager.NavigateTo(viewUrl)">View</div>
+                    <div class="run-export" @onclick="() => ExportTestRunAsync(run, CancellationToken.None)">Export</div>
+                    <div class="run-delete" @onclick="() => DeleteTestRun(run)">Delete</div>
+                </div>
+            }
+        </div>
+    }
+</div>

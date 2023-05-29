@@ -1,0 +1,146 @@
+﻿#testruns {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background-color: var(--background-color);
+}
+
+#testruns-page-title {
+    text-align: center;
+    color: var(--main-color);
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+#testruns-controller {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#testruns-import {
+    cursor: pointer;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    color: var(--background-color);
+    background-color: var(--main-color);
+    transition: all 0.5s ease;
+    font-weight: bold;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
+#testruns-import:hover,
+#testruns-import:focus {
+    background-color: var(--border-color);
+    transform: scale(1.05);
+    outline: none;
+}
+
+#testruns-page-disclaimer {
+    text-align: center;
+    color: var(--main-color);
+    font-size: 1.2rem;
+}
+
+#testruns-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.run {
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    padding: 20px;
+    position: relative;
+    background-color: var(--main-color);
+    transition: all 0.5s ease;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.run:hover,
+.run:focus {
+    background-color: var(--border-color);
+    transform: scale(1.02);
+    outline: none;
+}
+
+.run-title {
+    font-size: 1.4rem;
+    color: var(--background-color);
+    text-transform: uppercase;
+    flex-grow: 1;
+}
+
+
+.run-view,
+.run-export,
+.run-delete {
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    padding: 10px 20px;
+    margin: 5px;
+    transition: all 0.5s ease;
+    background-color: var(--background-color);
+    color: var(--action-color);
+    text-decoration: none;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.run-view:hover,
+.run-export:hover,
+.run-delete:hover,
+.run-view:focus,
+.run-export:focus,
+.run-delete:focus {
+    border: none;
+    background-color: var(--secondary-color);
+    transform: scale(1.05);
+    outline: none;
+}
+
+@media (max-width: 600px) {
+    #testruns {
+        width: 100%;
+        padding: 10px;
+    }
+
+    #testruns-controller {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #testruns-import {
+        width: 100%;
+    }
+
+    .run {
+        padding: 15px;
+    }
+
+    .run-title {
+        font-size: 1.2rem;
+    }
+
+    .run:hover,
+    .run:focus,
+    .run-view:hover,
+    .run-export:hover,
+    .run-delete:hover,
+    .run-view:focus,
+    .run-export:focus,
+    .run-delete:focus {
+        background-color: var(--main-color);
+        transform: none;
+    }
+}

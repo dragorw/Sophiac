@@ -1,0 +1,163 @@
+﻿#testsets {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background-color: var(--background-color);
+}
+
+#testsets-page-title {
+    text-align: center;
+    color: var(--main-color);
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+#testsets-controller {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
+
+
+#testsets-controller > div {
+    cursor: pointer;
+    padding: 15px 30px;
+    border: 3px solid var(--border-color);
+    border-radius: 5px;
+    text-align: center;
+    color: var(--background-color);
+    background-color: var(--main-color);
+    transition: all 0.5s ease;
+    margin: 5px;
+    font-weight: bold;
+}
+
+    #testsets-controller > div:hover {
+        background-color: var(--border-color);
+        transform: scale(1.05);
+        outline: 3px solid var(--main-color); 
+    }
+
+.testsets-controller-parse-disabled {
+    cursor: pointer;
+    padding: 15px 30px;
+    border-radius: 5px;
+    text-align: center;
+    color: var(--background-color);
+    transition: all 0.5s ease;
+    margin: 5px;
+    font-weight: bold;
+    background-color: grey;
+    border-color: 3px solid gray;
+}
+
+#testsets-page-disclaimer {
+    text-align: center;
+    color: var(--background-color);
+    font-size: 1.2rem;
+}
+
+#testsets-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.testset {
+    cursor: pointer;
+    border: 3px solid var(--border-color);
+    border-radius: 5px;
+    padding: 20px;
+    position: relative;
+    background-color: var(--main-color);
+    transition: all 0.5s ease;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+    .testset:hover,
+    .testset:focus {
+        background-color: var(--border-color);
+        transform: scale(1.05);
+        outline: 3px solid var(--main-color); 
+    }
+
+.testset-title {
+    text-align: center;
+    font-size: 1.4rem;
+    color: var(--background-color);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.testset-run,
+.testset-edit,
+.testset-export,
+.testset-delete {
+    cursor: pointer;
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+    text-align: center;
+    padding: 10px 20px;
+    margin: 5px;
+    transition: all 0.5s ease;
+    background-color: var(--background-color);
+    display: inline-block;
+    color: var(--action-color);
+    width: 100%;
+    text-decoration: none;
+}
+
+    .testset-run:hover,
+    .testset-edit:hover,
+    .testset-export:hover,
+    .testset-delete:hover,
+    .testset-run:focus,
+    .testset-edit:focus,
+    .testset-export:focus,
+    .testset-delete:focus {
+        border: 2px solid var(--action-color);
+        background-color: var(--secondary-color);
+        transform: scale(1.05);
+        outline: 3px solid var(--main-color); 
+    }
+
+@media (max-width: 600px) {
+    #testsets {
+        width: 100%;
+        padding: 10px;
+    }
+
+    #testsets-controller {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #testsets-controller-create,
+    #testsets-controller-parse,
+    #testsets-controller-import {
+        width: 100%;
+    }
+
+    .testset {
+        padding: 15px;
+    }
+
+    .testset-title {
+        font-size: 1.2rem;
+    }
+
+    .testset:hover,
+    .testset:focus,
+    .testset-run:hover,
+    .testset-edit:hover,
+    .testset-export:hover,
+    .testset-delete:hover,
+    .testset-run:focus,
+    .testset-edit:focus,
+    .testset-export:focus,
+    .testset-delete:focus {
+        background-color: var(--main-color);
+        transform: none;
+    }
+}
