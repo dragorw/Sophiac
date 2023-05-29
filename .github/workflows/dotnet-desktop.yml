@@ -33,10 +33,10 @@ jobs:
         dotnet-version: 7.0.x
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./src/Sophiac.sln
 
     - name: Build
-      run: dotnet build ./src/Sophiac.UI/Sophiac.UI.csproj --configuration Release --no-restore
+      run: dotnet build ./src/Sophiac.sln --configuration Release --no-restore
 
     - name: Publish
       run: dotnet publish ./src/Sophiac.UI/Sophiac.UI.csproj --configuration Release --no-build --output ./publish
