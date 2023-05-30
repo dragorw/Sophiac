@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net7.0-android;net7.0-ios;net7.0-maccatalyst</TargetFrameworks>
-        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
+        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">net7.0-windows10.0.19041.0</TargetFrameworks>
         <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
         <!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
         <OutputType>Exe</OutputType>
@@ -80,6 +80,7 @@
         <PackageReference Include="CommunityToolkit.Maui.Markup" Version="3.2.0" />
         <PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="1.0.2" />
         <PackageReference Include="iTextSharp" Version="5.5.13.3" />
+        <PackageReference Include="PDFParser-CSharp" Version="1.2.2" />
         <PackageReference Include="OpenAI" Version="1.7.2" />
     </ItemGroup>
 
