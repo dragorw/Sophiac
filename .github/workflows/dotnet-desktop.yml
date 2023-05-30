@@ -39,7 +39,7 @@ jobs:
       run: dotnet build ./src/Sophiac.sln --configuration Release --no-restore --framework net7.0-windows10.0.19041.0 --p:PublishSingleFile=true /p:PublishReadyToRun=false
 
     - name: Publish
-      run: dotnet publish ./src/Sophiac.UI/Sophiac.UI.csproj --configuration Release --no-build --output ./publish --framework net7.0-windows10.0.19041.0 --p:PublishSingleFile=true
+      run: dotnet publish ./src/Sophiac.UI/Sophiac.UI.csproj --configuration Release --no-build --output ./publish --framework net7.0-windows10.0.19041.0 --p:PublishSingleFile=true /p:PublishReadyToRun=false
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
