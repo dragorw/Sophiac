@@ -8,8 +8,6 @@ using CommunityToolkit.Maui.Storage;
 using CommunityToolkit.Maui.Alerts;
 using Newtonsoft.Json;
 using Sophiac.UI.Settings;
-using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.parser;
 using PDFIndexer.Utils;
 
 namespace Sophiac.UI.TestSets;
