@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Sophiac.UI.Settings;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
+using PDFIndexer.Utils;
 
 namespace Sophiac.UI.TestSets;
 
@@ -188,31 +189,28 @@ public partial class TestSetsPage : ComponentBase
             StateHasChanged();
             if (file != null)
             {
-                if (file.FileName.EndsWith("pdf", StringComparison.OrdinalIgnoreCase))
+
+                var extractor = new TextExtractor();
+                var text = extractor.ExtractFullText(file.FullPath);
+                var pages =
+                    text
+                        .Split(' ')
+                        .Select((word, index) => new { word, index })
+                        .GroupBy(x => x.index / 500)
+                        .Select(group => string.Join(" ", group.Select(x => x.word)))
+                        .ToList();
+                await Toast.Make("Processing PDF might take several minutes.").Show();
+                var raw = await Provider.PredictPayloadAsync(pages);
+                var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
+                var set = JsonConvert.DeserializeObject<TestSet>(raw, settings);
+                if (set is null)
                 {
-                    using (var reader = new PdfReader(file.FullPath))
-                    {
-                        var pages = new List<string>();
-                        var strategy = new SimpleTextExtractionStrategy();
-                        for (int index = 1; index <= reader.NumberOfPages; index++)
-                        {
-                            var pageText = PdfTextExtractor.GetTextFromPage(reader, index, strategy);
-                            pages.Add(pageText);
-                        }
-                        await Toast.Make("Processing PDF might take several minutes.").Show();
-                        var raw = await Provider.PredictPayloadAsync(pages);
-                        var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
-                        var set = JsonConvert.DeserializeObject<TestSet>(raw, settings);
-                        if (set is null)
-                        {
-                            await Toast.Make("Processing response from OpenAI failed. Please, try again.").Show();
-                            return;
-                        }
-                        Repository.CreateTestSet(set);
-                        _sets.Add(set);
-                        Toast.Make($"Successfully parsed {set.Title}");
-                    }
+                    await Toast.Make("Processing response from OpenAI failed. Please, try again.").Show();
+                    return;
                 }
+                Repository.CreateTestSet(set);
+                _sets.Add(set);
+                Toast.Make($"Successfully parsed {set.Title}");
             }
             else
             {
