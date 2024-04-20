@@ -8,9 +8,13 @@
             "name": ".NET Core Launch (console)",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceFolder}/bin/Debug/net7.0-maccatalyst/Sophiac.UI.dll",
-            "args": [],
+            // "preLaunchTask": "build",
+            // "program": "./bin/Debug/net8.0-maccatalyst/maccatalyst-arm64/Sophiac.UI.dll",
+            "program": "./MyMauiApp/bin/Debug/net8.0-maccatalyst/maccatalyst-arm64/MyMauiApp.dll",
+            "args": [
+                "-f",
+                "net8.0-maccatalyst"
+            ],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "console": "internalConsole"
