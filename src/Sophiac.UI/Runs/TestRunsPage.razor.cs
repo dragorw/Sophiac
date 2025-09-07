@@ -1,13 +1,9 @@
 ﻿using System.Text.Json;
-using System.Threading;
 using Microsoft.AspNetCore.Components;
-using Sophiac.Core;
-using Sophiac.Core.TestSets;
 using System.Text;
 using CommunityToolkit.Maui.Storage;
 using CommunityToolkit.Maui.Alerts;
-using System.Diagnostics;
-using Sophiac.Core.TestRuns;
+using Sophiac.Domain.TestRuns;
 
 namespace Sophiac.UI.Runs;
 
@@ -21,9 +17,17 @@ public partial class TestRunsPage : ComponentBase
 
     private IList<TestRun> _runs;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        _runs = repository.ReadTestRuns().ToList();
+        try
+        {
+            _runs = repository.ReadTestRuns().ToList();
+        }
+        catch (Exception e)
+        {
+            await Toast.Make($"Couldn't load test runs: {e.Message}").Show();
+            throw;
+        }
     }
 
     public void DeleteTestRun(TestRun run)
@@ -91,7 +95,7 @@ public partial class TestRunsPage : ComponentBase
         }
 
 
-        var raw = JsonSerializer.Serialize(run);
+        var raw = JsonSerializer.Serialize(run, new JsonSerializerOptions() { WriteIndented = true });
         var bites = Encoding.Default.GetBytes(raw);
         using var stream = new MemoryStream(bites);
         var fileSaverResult = await FileSaver.Default.SaveAsync(run.FileName, stream, token);

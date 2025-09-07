@@ -13,30 +13,47 @@
     margin-bottom: 2rem;
 }
 
+.settings-api-provider,
+.settings-ollama-url,
+.settings-llm-model,
 .settings-openai {
     margin-bottom: 2rem;
+    padding: 20px;
     border: 1px solid var(--border-color);
     border-radius: 5px;
-    padding: 20px;
     box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
 }
 
-.settings-openai-key-description {
+.settings-llm-model-description,
+.settings-openai-key-description,
+.settings-api-provider-description,
+.settings-ollama-url-description {
     color: var(--main-color);
     font-size: 1.2rem;
     margin-bottom: 1rem;
 }
 
-.settings-openai-key-input input {
+.settings-api-provider-options input,
+.settings-ollama-url-input input,
+.settings-openai-key-input input,
+.settings-llm-model-input input {
     border: 1px solid var(--border-color);
     border-radius: 5px;
     padding: 0.5rem;
-    width: 10rem;
+    width: 25rem;
     font-size: 1rem;
     color: var(--main-color);
+    box-sizing: border-box;
 }
 
-.settings-openai-key-input input:focus {
+.settings-llm-model-input input {
+    width: 120%;
+}
+
+.settings-api-provider-options input:focus,
+.settings-ollama-url-input input:focus,
+.settings-openai-key-input input:focus,
+.settings-llm-model-input input:focus {
     outline: none;
     box-shadow: 0 0 5px var(--main-color);
 }
@@ -51,7 +68,36 @@
         font-size: 1.8rem;
     }
 
-    .settings-openai-key-description {
+    .settings-llm-model-description,
+    .settings-openai-key-description,
+    .settings-api-provider-description,
+    .settings-ollama-url-description {
         font-size: 1rem;
     }
+}
+
+
+@media (max-width: 600px) {
+    .settings {
+        width: 100%;
+        padding: 10px;
+    }
+
+
+
+
+
+
+
+    .settings-title {
+        font-size: 1.8rem;
+    }
+
+    .settings-llm-model-description,
+    .settings-openai-key-description,
+    .settings-api-provider-description,
+    .settings-ollama-url-description {
+        font-size: 1rem;
+    }
+
 }

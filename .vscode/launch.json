@@ -5,16 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Launch (console)",
-            "type": "coreclr",
+            "name": "C#: Sophiac.UI",
+            "type": "dotnet",
             "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceFolder}/bin/Debug/net7.0-maccatalyst/Sophiac.UI.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}",
-            "stopAtEntry": false,
-            "console": "internalConsole"
+            "projectPath": "${workspaceFolder}/src/Sophiac.UI/Sophiac.UI.csproj",
+            "launchConfigurationId": "00008103-001139E23CEB001E"
         }
-
     ]
 }

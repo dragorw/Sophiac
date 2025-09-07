@@ -1,20 +1,12 @@
-﻿using System.Text.Json;
-using System.Threading;
-using Microsoft.AspNetCore.Components;
-using Sophiac.Core;
-using Sophiac.Core.TestSets;
-using System.Text;
-using CommunityToolkit.Maui.Storage;
-using CommunityToolkit.Maui.Alerts;
-using System.Diagnostics;
-using Sophiac.Core.TestRuns;
+﻿using Microsoft.AspNetCore.Components;
+using Sophiac.Domain.TestRuns;
 
 namespace Sophiac.UI.Runs;
 
 public partial class TestRunPage : ComponentBase
 {
     [Parameter]
-    public string TestSetFileName { get; set; }
+    public string TestRunFileName { get; set; }
 
     [Inject]
     public ITestRunsRepository repository { get; set; }
@@ -26,9 +18,9 @@ public partial class TestRunPage : ComponentBase
 
     protected override void OnInitialized()
     {
-        if (string.IsNullOrEmpty(TestSetFileName))
+        if (string.IsNullOrEmpty(TestRunFileName))
             return;
 
-        _run = repository.ReadTestRun(TestSetFileName);
+        _run = repository.ReadTestRun(TestRunFileName);
     }
 }

@@ -1,18 +1,21 @@
 ﻿namespace Sophiac.UI;
 
-public partial class App : Application
+public partial class App : Microsoft.Maui.Controls.Application
 {
 	public App()
 	{
 		InitializeComponent();
-
-		MainPage = new MainPage();
 	}
 
-    protected override void OnStart()
-    {
+	protected override void OnStart()
+	{
 		var path = Path.Combine(FileSystem.Current.AppDataDirectory, "com.github.aemilivs.sophiac");
 		var info = Directory.CreateDirectory(path);
-        base.OnStart();
+		base.OnStart();
+	}
+	
+	protected override Window CreateWindow(IActivationState activationState)
+    {
+        return new Window(new MainPage());
     }
 }

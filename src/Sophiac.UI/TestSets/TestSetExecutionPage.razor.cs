@@ -1,31 +1,27 @@
-﻿using System.Text.Json;
-using System.Threading;
-using Microsoft.AspNetCore.Components;
-using System.Text;
-using CommunityToolkit.Maui.Storage;
-using CommunityToolkit.Maui.Alerts;
+﻿using Microsoft.AspNetCore.Components;
 using System.Diagnostics;
-using Sophiac.Core;
-using Sophiac.Core.TestSets;
-using Sophiac.Core.TestRuns;
-using Sophiac.Core.Answers;
-using Sophiac.Core.Questions;
+using Sophiac.Domain.TestSets;
+using Sophiac.Domain.TestRuns;
+using Sophiac.Domain.Questions;
+using Sophiac.Infrastructure.Repositories;
+using System.Threading.Tasks;
+using Sophiac.Domain.Answers;
 
 namespace Sophiac.UI.TestSets;
 
 public partial class TestSetExecutionPage : ComponentBase
 {
     [Parameter]
-    public string TestSetFileName { get; set; }
+    public string TestSetTitle { get; set; }
 
     [Inject]
-    public ITestSetsRepository collectionsRepository { get; set; }
+    public IQuestionsService Service { get; set; }
 
     [Inject]
     public ITestRunsRepository runsRepository { get; set; }
 
     [Inject]
-    public NavigationManager manager { get; set; }
+    public NavigationManager Manager { get; set; }
 
     private Stopwatch _watch = new Stopwatch();
 
@@ -35,13 +31,12 @@ public partial class TestSetExecutionPage : ComponentBase
 
     private TestRun _run = new TestRun();
 
-    protected override void OnInitialized()
+    protected override async void OnInitialized()
     {
-        if (string.IsNullOrEmpty(TestSetFileName))
+        if (string.IsNullOrEmpty(TestSetTitle))
             return;
 
-        _set = collectionsRepository.ReadTestSet(TestSetFileName);
-        _run.Title = _set.Title;
+        _set = await Service.ReadTestSetAsync(TestSetTitle);
     }
 
     public void StartRun()
@@ -53,10 +48,21 @@ public partial class TestSetExecutionPage : ComponentBase
     public void PostAnswerAction()
     {
         _currentQuestion = _set.GetNextQuestion();
-        StateHasChanged();
+        if (_currentQuestion is SingleChoiceQuestion singleChoiceQuestion)
+            _set.SingleChoiceQuestions.Remove(singleChoiceQuestion);
 
-        if (_currentQuestion is null)
-            RecordRun(_run);
+        if (_currentQuestion is MultipleChoicesQuestion multipleChoicesQuestion)
+            _set.MultipleChoiceQuestions.Remove(multipleChoicesQuestion);
+
+        if (_currentQuestion is MappingQuestion mappingQuestion)
+            _set.MappingQuestions.Remove(mappingQuestion);
+
+        if (_set.Questions.Any() == false)
+        {
+            _set.IsComplete = true;
+        }
+
+        StateHasChanged();
     }
 
     public void RecordRun(TestRun run)
@@ -64,6 +70,6 @@ public partial class TestSetExecutionPage : ComponentBase
         _watch.Reset();
         runsRepository.CreateTestRun(_run);
         var url = $"/testruns/view/{_run.FileName}";
-        manager.NavigateTo(url);
+        Manager.NavigateTo(url);
     }
 }

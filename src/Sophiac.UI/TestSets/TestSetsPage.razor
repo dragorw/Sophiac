@@ -2,19 +2,27 @@
 
 <div id="testsets">
     <div id="testsets-page-title">Examination Test Sets</div>
-    <div class="spinner @(IsLoading ? "" : "hidden")"></div>
     @{ var createUrl = "testsets/view"; }
     <div id="testsets-controller">
         <div id="testsets-controller-create" @onclick="() => Manager.NavigateTo(createUrl)">
             Create Test Set
         </div>
-        <div id="testsets-controller-parse" class="@(string.IsNullOrEmpty(Provider.APIKey) ? "testsets-controller-parse-disabled" : "")" @onclick="ParsePDFAsync">
+        <div id="testsets-controller-parse" class="@("")" @onclick="ParsePDFAsync">
             Parse PDF
         </div>
         <div id="testsets-controller-import" @onclick="() => ImportTestSetAsync(CancellationToken.None)">
             Import Test Set
         </div>
     </div>
+
+    @if (@IsLoading)
+    {
+        <div class="loading-menu">
+            <div class="spinner"></div>
+            <div class="testset-cancel-generation" @onclick="() => CancellationTokenSource.Cancel()">Cancel Generation</div>
+        </div>
+    }
+    
 
     @if (this._sets.Count == 0)
     {
@@ -27,9 +35,10 @@
             {
                 <div class="testset" @key="testset">
                     <div class="testset-title">@testset.Title</div>
-                    @{ var runUrl = $"/testsets/execute/{testset.FileName}";}
-                    <div class="testset-run" @onclick="() => Manager.NavigateTo(runUrl)">Run</div>
-                    @{ var updateUrl = $"/testsets/view/{testset.FileName}";}
+                    <div class="testset-questions-counter">@QuestionsLabel(testset.Questions.Count())</div>
+                    @{ var runUrl = $"/testsets/execute/{testset.Title}";}
+                    <div class="testset-run" @onclick="() => { Manager.NavigateTo(runUrl); }">Run</div>
+                    @{ var updateUrl = $"/testsets/view/{testset.Title}";}
                     <div class="testset-edit" @onclick="() => Manager.NavigateTo(updateUrl)">Edit</div>
                     <div class="testset-export" @onclick="() => ExportTestSetAsync(testset, CancellationToken.None)">Export</div>
                     <div class="testset-delete" @onclick="() => DeleteTestSet(testset)">Delete</div>

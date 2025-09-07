@@ -1,8 +1,64 @@
-﻿@page "/testsets/execute/{TestSetFileName?}"
-@using Sophiac.Core.Questions
+﻿@page "/testsets/execute/{TestSetTitle?}"
+@using Sophiac.Domain.Answers
+@using Sophiac.Domain.Questions
 @using Sophiac.UI.Questions.Execution
 
-<div id="testset-run">
+@if (_set.IsComplete == true)
+{
+    <div id="run-title">@_set.Title</div>
+    <div id="run-time">Started: @_run.Time.ToLocalTime()</div>
+    <div id="run-points">Points: @_run.Entries.Sum(it => it.Answer.Points) out of @(_run.Entries.Sum(it =>
+            it.Question.GetMaximumPoints()))</div>
+    <div id="run-entries">
+        @foreach (var entry in _run.Entries)
+        {
+            <div class="entry" @key="entry">
+                <div class="entry-question-title">@entry.Question.Title</div>
+                <div class="entry-question-description">@entry.Question.Description</div>
+                @switch (entry.Answer)
+                {
+                    case SingleChoiceAnswer singleChoiceAnswer:
+                        <div class="entry-question-answers">
+                            <div class="entry-question-answer">
+                                @(singleChoiceAnswer.Content)
+                            </div>
+                        </div>
+                        break;
+                    case MultipleChoicesAnswer multipleChoicesAnswer:
+                        <div class="entry-question-answers">
+                            <div class="entry-question-answer">
+                                @(multipleChoicesAnswer.Content.Select(it => it.Content).Aggregate((left, right) => $"{left}, {right}"))
+                            </div>
+                        </div>
+                        break;
+                    case MappingAnswer mappingAnswer:
+                        <div class="entry-question-answers">
+                            @foreach (var pair in mappingAnswer.Content)
+                            {
+                                <div class="entry-question-answer">
+                                    @(pair.Source) - @(pair.Destination)
+                                </div>
+                            }
+                        </div>
+                        break;
+                }
+                @if (entry.HasBeenSkipped)
+                {
+                    <div class="entry-question-disclaimer">The question has been skipped.</div>
+                }
+                else
+                {
+                    <div class="entry-question-points">@entry.Answer.Points out of @(entry.Question.GetMaximumPoints())</div>
+                }
+                <div class="entry-question-span">Time spent on a question: @(Convert.ToInt32(entry.AnswerSpan.TotalSeconds))
+                    @(entry.AnswerSpan.TotalSeconds > 1 ? "seconds" : "second")</div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div id="testset-run"></div>
     <div id="testset-run-title">@_set.Title</div>
     @if (_currentQuestion is null)
     {
@@ -23,19 +79,21 @@
             @switch (_currentQuestion)
             {
                 case SingleChoiceQuestion singleChoiceQuestion:
-                    <SingleChoiceQuestionExecutionComponent Question="singleChoiceQuestion" Run="_run" PostAnswerAction="PostAnswerAction" Watch="_watch"></SingleChoiceQuestionExecutionComponent>
+                    <SingleChoiceQuestionExecutionComponent Question="singleChoiceQuestion" Run="_run"
+                        PostAnswerAction="PostAnswerAction" Watch="_watch"></SingleChoiceQuestionExecutionComponent>
                     break;
                 case MultipleChoicesQuestion multipleChoicesQuestion:
-                    <MultipleChoicesQuestionExecutionComponent Question="multipleChoicesQuestion" Run="_run" PostAnswerAction="PostAnswerAction" Watch="_watch"></MultipleChoicesQuestionExecutionComponent>
+                    <MultipleChoicesQuestionExecutionComponent Question="multipleChoicesQuestion" Run="_run"
+                        PostAnswerAction="PostAnswerAction" Watch="_watch"></MultipleChoicesQuestionExecutionComponent>
                     break;
                 case MappingQuestion mappingQuestion:
-                    <MappingQuestionExecutionComponent Question="mappingQuestion" Run="_run" PostAnswerAction="PostAnswerAction" Watch="_watch"></MappingQuestionExecutionComponent>
+                    <MappingQuestionExecutionComponent Question="mappingQuestion" Run="_run" PostAnswerAction="PostAnswerAction"
+                        Watch="_watch"></MappingQuestionExecutionComponent>
                     break;
                 default:
                     <div id="testset-run-question">Invalid question type.</div>
-
                     break;
             }
         </div>
     }
-</div>
+}

@@ -1,44 +1,52 @@
-﻿using System.Text.Json;
-using System.Threading;
-using Microsoft.AspNetCore.Components;
-using Sophiac.Core;
-using Sophiac.Core.TestSets;
+﻿using Microsoft.AspNetCore.Components;
+using Sophiac.Domain.TestSets;
 using System.Text;
 using CommunityToolkit.Maui.Storage;
 using CommunityToolkit.Maui.Alerts;
-using Newtonsoft.Json;
-using Sophiac.UI.Settings;
 using PDFIndexer.Utils;
+using Sophiac.Domain.Questions;
+using System.Text.Json;
+using Sophiac.Domain.Generation;
 
 namespace Sophiac.UI.TestSets;
 
 public partial class TestSetsPage : ComponentBase
 {
     [Inject]
-    public ITestSetsRepository Repository { get; set; }
+    public IQuestionsService QuestionsService { get; set; }
+
+    [Inject]
+    public IGenerationService GenerationService { get; set; }
 
     [Inject]
     public NavigationManager Manager { get; set; }
 
-    [Inject]
-    public OpenAIAPIProvider Provider { get; set; }
+    public string QuestionsLabel(int count)
+    {
+        return count switch
+        {
+            0 => "0 Questions",
+            1 => "1 Question",
+            _ => $"{count} Questions"
+        };
+    }
+
+    public CancellationTokenSource CancellationTokenSource { get; set; } = new();
 
     public bool IsLoading { get; set; } = false;
 
     private IList<TestSet> _sets;
 
-    protected override void OnInitialized()
+    protected override async void OnInitialized()
     {
-        _sets =
-            Repository
-                .ReadTestSet()
-                .ToList();
+        var sets = await QuestionsService.ReadTestSetsAsync();
+        _sets = sets.ToList();
     }
 
     public void DeleteTestSet(TestSet set)
     {
         _sets.Remove(set);
-        Repository.DeleteTestSet(set.FileName);
+        QuestionsService.DeleteTestSet(set.Title);
     }
 
     public async Task ImportTestSetAsync(CancellationToken token)
@@ -74,8 +82,12 @@ public partial class TestSetsPage : ComponentBase
             {
                 if (file.FileName.EndsWith("json", StringComparison.OrdinalIgnoreCase))
                 {
-                    var set = Repository.ImportTestSet(file.FullPath);
-                    _sets.Add(set);
+                    var raw = File.ReadAllText(file.FullPath);
+                    var serializationOptions = new JsonSerializerOptions { WriteIndented = true };
+                    var set = JsonSerializer.Deserialize<TestSet>(raw, serializationOptions);
+                    await QuestionsService.CreateTestSetAsync(set);
+                    var sets = await QuestionsService.ReadTestSetsAsync();
+                    _sets = sets.ToList();
                 }
             }
             else
@@ -99,8 +111,9 @@ public partial class TestSetsPage : ComponentBase
             return;
         }
 
-        var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
-        var raw = JsonConvert.SerializeObject(set, settings);
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        var raw = JsonSerializer.Serialize(set, options);
+
         var bites = Encoding.Default.GetBytes(raw);
         using var stream = new MemoryStream(bites);
         var fileSaverResult = await FileSaver.Default.SaveAsync(set.FileName, stream, token);
@@ -150,12 +163,6 @@ public partial class TestSetsPage : ComponentBase
 
     private async Task ParsePDFAsync()
     {
-        if (string.IsNullOrEmpty(Provider.APIKey))
-        {
-            await Toast.Make("API Key is not set.").Show();
-            return;
-        }
-
         var permission = await CheckAndRequestStorageReadPermission();
 
         if (permission != PermissionStatus.Granted)
@@ -187,28 +194,17 @@ public partial class TestSetsPage : ComponentBase
             StateHasChanged();
             if (file != null)
             {
+                await Toast.Make("Processing PDF might take some time.").Show();
 
                 var extractor = new TextExtractor();
                 var text = extractor.ExtractFullText(file.FullPath);
-                var pages =
-                    text
-                        .Split(' ')
-                        .Select((word, index) => new { word, index })
-                        .GroupBy(x => x.index / 500)
-                        .Select(group => string.Join(" ", group.Select(x => x.word)))
-                        .ToList();
-                await Toast.Make("Processing PDF might take several minutes.").Show();
-                var raw = await Provider.PredictPayloadAsync(pages);
-                var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
-                var set = JsonConvert.DeserializeObject<TestSet>(raw, settings);
-                if (set is null)
-                {
-                    await Toast.Make("Processing response from OpenAI failed. Please, try again.").Show();
-                    return;
-                }
-                Repository.CreateTestSet(set);
-                _sets.Add(set);
-                Toast.Make($"Successfully parsed {set.Title}");
+
+                await QuestionsService.CreateTestSetAsync(file.FileName);
+                var cancellationToken = CancellationTokenSource.Token;
+                await GenerationService.GenerateQuestionAsync(file.FileName, text, cancellationToken);
+                var set = await QuestionsService.ReadTestSetAsync(file.FileName);
+                await QuestionsService.UpdateTestSetAsync(set);
+                StateHasChanged();
             }
             else
             {
@@ -222,6 +218,7 @@ public partial class TestSetsPage : ComponentBase
         finally
         {
             IsLoading = false;
+            StateHasChanged();
         }
     }
 }

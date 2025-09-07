@@ -2,14 +2,45 @@
 
 <div class="settings">
     <div class="settings-title">Settings</div>
+    <div class="settings-api-provider">
+        <div class="settings-api-provider-description">
+            LLM Provider
+        </div>
+        <div class="settings-api-provider-options">
+            <InputSelect @bind-Value="_selectedProvider" @oninput="@OnProviderChangeAsync">
+                <option value="OpenAI">OpenAI</option>
+                <option value="Ollama">Ollama</option>
+            </InputSelect>
+        </div>
+    </div>
+    <div class="settings-llm-model">
+        <div class="settings-llm-model-description">
+            LLM Model
+        </div>
+        <div class="settings-api-provider-options">
+            <InputText @bind-Value="_llmModel" @oninput="@OnLLMModelChangeAsync"></InputText>
+        </div>
+    </div>
     <div class="settings-openai">
         <div class="settings-openai-key">
             <div class="settings-openai-key-description">
-                OpenAI key that is used to communicate with API.
+                API Key
             </div>
             <div class="settings-openai-key-input">
                 <InputText @bind-Value="_key" @oninput="@SaveKeyAsync"></InputText>
             </div>
         </div>
     </div>
+
+    @if (_selectedProvider == "Ollama")
+    {
+        <div class="settings-ollama-url">
+            <div class="settings-ollama-url-description">
+                Ollama URL
+            </div>
+            <div class="settings-ollama-url-input">
+                <InputText @bind-Value="_ollamaUrl" @oninput="@OnUrlChangeAsync"></InputText>
+            </div>
+        </div>
+    }
 </div>

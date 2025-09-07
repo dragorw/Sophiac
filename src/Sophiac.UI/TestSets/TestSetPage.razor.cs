@@ -1,86 +1,109 @@
-﻿using System.Text.Json;
+﻿using System.Threading.Tasks;
+using CommunityToolkit.Maui.Alerts;
 using Microsoft.AspNetCore.Components;
-using Sophiac.Core;
-using Sophiac.Core.Questions;
-using Sophiac.Core.TestSets;
+using Sophiac.Domain.Questions;
+using Sophiac.Domain.TestSets;
 
 namespace Sophiac.UI.TestSets;
 
 public partial class TestSetPage : ComponentBase
 {
     [Parameter]
-    public string TestSetFileName { get; set; }
+    public string TestSetTitle { get; set; }
 
     [Inject]
-    public ITestSetsRepository repository { get; set; }
+    public IQuestionsService Service { get; set; }
 
     [Inject]
-    public NavigationManager manager { get; set; }
+    public NavigationManager Manager { get; set; }
 
     private TestSet _set = new TestSet();
 
     private IList<string> _questionTypes = new List<string>();
 
-    protected override void OnInitialized()
+    protected override async void OnInitialized()
     {
-        if (string.IsNullOrEmpty(TestSetFileName))
+        if (string.IsNullOrEmpty(TestSetTitle))
             return;
 
-        _set = repository.ReadTestSet(TestSetFileName);
+        _set = await Service.ReadTestSetAsync(TestSetTitle);
+
+        if (_set == null)
+        {
+            Toast.Make("Couldn't load the test set!").Show();
+        }
     }
 
     public void OnQuestionTypeChange(ChangeEventArgs arguments, QuestionBase question)
     {
         var index = _set.Questions.IndexOf(question);
-        _set.Questions.RemoveAt(index);
-        
+
+        DeleteQuestion(question);
+
         var type = arguments.Value.ToString();
 
         if (type == typeof(SingleChoiceQuestion).Name)
-            question =
+        {
+            var singleChoiceQuestion =
                 new SingleChoiceQuestion
                 {
                     Title = question.Title,
                     Description = question.Description
                 };
+            _set.SingleChoiceQuestions.Add(singleChoiceQuestion);
+        }
 
         if (type == typeof(MultipleChoicesQuestion).Name)
-            question =
+        {
+            var multipleChoicesQuestion =
                 new MultipleChoicesQuestion
                 {
                     Title = question.Title,
                     Description = question.Description
                 };
+            _set.MultipleChoiceQuestions.Add(multipleChoicesQuestion);
+        }
+
 
         if (type == typeof(MappingQuestion).Name)
-            question =
+        {
+            var mappingQuestion =
                 new MappingQuestion
                 {
                     Title = question.Title,
                     Description = question.Description
                 };
+            _set.MappingQuestions.Add(mappingQuestion);
+        }
 
-        _set.Questions.Insert(index, question);
         StateHasChanged();
     }
 
     public void CreateQuestion()
     {
         var question = new SingleChoiceQuestion();
-        _set.Questions.Add(question);
+        _set.SingleChoiceQuestions.Add(question);
         _questionTypes = _set.Questions.Select(it => it.GetType().Name).ToList();
     }
 
     public void DeleteQuestion(QuestionBase question)
     {
-        _set.Questions.Remove(question);
+        if (question is SingleChoiceQuestion singleChoiceQuestion)
+            _set.SingleChoiceQuestions.Remove(singleChoiceQuestion);
+
+        if (question is MultipleChoicesQuestion multipleChoicesQuestion)
+            _set.MultipleChoiceQuestions.Remove(multipleChoicesQuestion);
+
+        if (question is MappingQuestion mappingQuestion)
+            _set.MappingQuestions.Remove(mappingQuestion);
+
         _questionTypes = _set.Questions.Select(it => it.GetType().Name).ToList();
         StateHasChanged();
     }
 
     public async Task SubmitAsync()
     {
-        repository.CreateTestSet(_set);
-        manager.NavigateTo("/testsets");
+        await Service.CreateTestSetAsync(_set);
+        Manager.NavigateTo("/testsets");
     }
 }
