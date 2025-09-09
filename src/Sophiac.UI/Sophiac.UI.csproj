@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
-        <TargetFrameworks>net9.0-maccatalyst</TargetFrameworks>
-        <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+		<TargetFrameworks>net9.0-windows10.0.19041.0<!--;net9.0-android--></TargetFrameworks>
+		<GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
         <SelfContained>true</SelfContained>
         <SkipValidateMauiImplicitPackageReferences>true</SkipValidateMauiImplicitPackageReferences>
         <EnableWindowsTargeting>true</EnableWindowsTargeting>
@@ -103,6 +103,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Sophiac.Application\Sophiac.Application.csproj" />
+      <ProjectReference Include="..\Sophiac.Domain\Sophiac.Domain.csproj" />
       <ProjectReference Include="..\Sophiac.Infrastructure\Sophiac.Infrastructure.csproj" />
     </ItemGroup>
     <ItemGroup>
